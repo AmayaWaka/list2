@@ -38,6 +38,16 @@ const item3 = new Item({
 name: "Eat"
 });
 
+//a dummy array
+
+const defaultItems =[item1, item2, item3];
+Item.insertMany(defaultItems, function(err){
+  if(err){
+    console.log(err)
+  }else{
+    console.log("Successfully saved items");
+  }
+})
 
 
 
