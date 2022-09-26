@@ -41,13 +41,13 @@ name: "Eat"
 //a dummy array
 
 const defaultItems =[item1, item2, item3];
-Item.insertMany(defaultItems, function(err){
-  if(err){
-    console.log(err)
-  }else{
-    console.log("Successfully saved dummy items");
-  }
-})
+// Item.insertMany(defaultItems, function(err){
+//   if(err){
+//     console.log(err)
+//   }else{
+//     console.log("Successfully saved dummy items");
+//   }
+// })
 
 
 
@@ -56,8 +56,11 @@ Item.insertMany(defaultItems, function(err){
 app.set('view engine', 'ejs');
 app.get("/", function(req, res){
 
+  Item.find({}, function(err, foundItems){
+    res.render("list", { listTitle: "Today", newListItems: foundItems })
 
-  res.render("list", { listTitle: "Today", newListItems: workItems })
+
+  });
 });
 
 app.post("/", function(req, res){
