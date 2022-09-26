@@ -1,19 +1,53 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const date = require(__dirname + "/date.js");
+//Mongoose variable declared
+const mongoose = require("mongoose");
+
+
 
 const items = [];
 const workItems = [];
 //List.ejs rendering
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static("public"));
+//Connect and create db using mongoose
+mongoose.connect("mongodb://localhost://localhost/todolistDB")
+//Items schema created
+// const itemsSchema = mongoose.Schema({
+//   name: String
+// });
+//Items schema second way
+const itemsSchema = {
+  name: String
+};
+//Item model used to create the item collection
+const Item = mongoose.model("item",itemsSchema );
+
+
+//New Items
+const item1 = new Item({
+name: "Wake up"
+});
+
+const item2 = new Item({
+name: "Take a bath"
+});
+
+const item3 = new Item({
+name: "Eat"
+});
+
+
+
+
+
 
 app.set('view engine', 'ejs');
 app.get("/", function(req, res){
-  const day = date.getDate();
 
-  res.render("list", { listTitle: day, newListItems: items })
+
+  res.render("list", { listTitle: "Today", newListItems: workItems })
 });
 
 app.post("/", function(req, res){
