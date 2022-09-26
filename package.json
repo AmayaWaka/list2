@@ -1,0 +1,29 @@
+{
+  "name": "todolist-v1",
+  "version": "1.0.0",
+  "description": "To DO List",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "\u001b[A\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[B"
+  ],
+  "author": "Waka Amaya",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmayaWaka/todo_list_app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AmayaWaka/todo_list_app/issues"
+  },
+  "homepage": "https://github.com/AmayaWaka/todo_list_app#readme"
+}
