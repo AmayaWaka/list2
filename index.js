@@ -6,13 +6,13 @@ const mongoose = require("mongoose");
 
 
 
-const items = [];
-const workItems = [];
+// const items = [];
+// const workItems = [];
 //List.ejs rendering
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static("public"));
 //Connect and create db using mongoose
-mongoose.connect("mongodb://localhost://localhost/todolistDB")
+mongoose.connect("mongodb://localhost:27017/todolistDB")
 //Items schema created
 // const itemsSchema = mongoose.Schema({
 //   name: String
@@ -45,7 +45,7 @@ Item.insertMany(defaultItems, function(err){
   if(err){
     console.log(err)
   }else{
-    console.log("Successfully saved items");
+    console.log("Successfully saved dummy items");
   }
 })
 
