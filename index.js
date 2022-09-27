@@ -48,7 +48,7 @@ const defaultItems =[item1, item2, item3];
 
 app.set('view engine', 'ejs');
 app.get("/", function(req, res){
-
+//Finding items from db
   Item.find({}, function(err, foundItems){
     if (foundItems.length === 0){
       Item.insertMany(defaultItems, function(err){
@@ -58,7 +58,9 @@ app.get("/", function(req, res){
           console.log("Successfuly saved default items to db");
         }
       });
+      //Redirecting after a successful inserion
       res.redirect("/");
+      //Once redirected the condition will fall under else statement since the array length is nolonger 0
 
     }else{
       res.render("list", { listTitle: "Today", newListItems: foundItems })
@@ -68,17 +70,18 @@ app.get("/", function(req, res){
 
   });
 });
-
+//Saving dynamic data to db
 app.post("/", function(req, res){
 
-  item = req.body.newItem;
-  if(req.body.list === "Work"){
-    workItems.push(item);
-    res.redirect("/work")
-  }else{
-    items.push(item);
-    res.redirect("/");
-  }
+  const itemName = req.body.newItem;
+
+  const item = new Item({
+    name: itemName
+  });
+  item.save();
+  res.redirect("/");
+
+
 
 });
 
