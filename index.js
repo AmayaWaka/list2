@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static("public"));
 //Connect and create db using mongoose
-mongoose.connect("mongodb://localhost:27017/todolistDB")
+mongoose.connect("mongodb://localhost:27017/todolistDB");
 //Items schema created
 // const itemsSchema = mongoose.Schema({
 //   name: String
@@ -21,31 +21,20 @@ mongoose.connect("mongodb://localhost:27017/todolistDB")
 const itemsSchema = {
   name: String
 };
+
 //Item model used to create the item collection
 const Item = mongoose.model("item",itemsSchema );
-
-
-//New Items
 const item1 = new Item({
-name: "Wake up"
+  name: "Wake"
 });
-
 const item2 = new Item({
-name: "Take a bath"
+  name: "Eat"
 });
-
 const item3 = new Item({
-name: "Eat"
+  name: "Run"
 });
-
 //a dummy array
-
 const defaultItems =[item1, item2, item3];
-
-
-
-
-
 app.set('view engine', 'ejs');
 app.get("/", function(req, res){
 //Finding items from db
@@ -65,9 +54,6 @@ app.get("/", function(req, res){
     }else{
       res.render("list", { listTitle: "Today", newListItems: foundItems })
     }
-
-
-
   });
 });
 //Saving dynamic data to db
@@ -79,9 +65,8 @@ app.post("/", function(req, res){
     name: itemName
   });
   item.save();
+
   res.redirect("/");
-
-
 
 });
 
@@ -92,6 +77,11 @@ app.post("/work", function(req, res){
   let item = req.body.newItem;
   workItems.push(item);
   res.redirect("/work");
+
+});
+
+app.post("/delete",function(req, res){
+  console.log(req.body)
 
 });
 
