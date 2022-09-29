@@ -35,6 +35,15 @@ const item3 = new Item({
 });
 //a dummy array
 const defaultItems =[item1, item2, item3];
+//Schema for the dynamic route
+const listSchema = {
+  name: String,
+  items: [itemsSchema]
+
+};
+//Dynamic route model
+const List = mongoose.model("List", listSchema);
+
 app.set('view engine', 'ejs');
 app.get("/", function(req, res){
 //Finding items from db
@@ -55,6 +64,17 @@ app.get("/", function(req, res){
       res.render("list", { listTitle: "Today", newListItems: foundItems })
     }
   });
+});
+//Getting  custom todo list
+app.get("/:customListName", function(req,res){
+  const customListName = req.params.customListName;
+  const list = new List({
+    name: customListName,
+    items: defaultItems
+  });
+
+list.save();
+
 });
 //Saving dynamic data to db
 app.post("/", function(req, res){
@@ -85,12 +105,10 @@ app.post("/delete",function(req, res){
 
 //finding and Deleting items from db
   Item.findByIdAndRemove(checkedItemId, function(err){
-    if(err){
-      console.log("Unable to delete items");
-    }else{
-      console.log("Deleted Successfuly");
-      res.redirect("/")
-    }
+if(!err){
+  console.log("Successfuly deleted checked item");
+  res.redirect("/");
+}
 
   });
 
