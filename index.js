@@ -72,19 +72,23 @@ app.get("/:customListName", function(req,res){
 List.findOne({name: customListName}, function(err, foundList){
   if(!err){
     if(!foundList){
-      console.log("Doesnt Exist");
+      //Create new list
+      const list = new List({
+        name: customListName,
+        items: defaultItems
+      });
+
+    list.save();
+    res.redirect("/" + customListName);
     }else{
-      console.log("Exists");
+      //Show existing list
+      res.render("list", {listTitle: foundList.name, newListItems: foundList.items});
+
     }
   }
 
 });
-  const list = new List({
-    name: customListName,
-    items: defaultItems
-  });
 
-list.save();
 
 });
 //Saving dynamic data to db
