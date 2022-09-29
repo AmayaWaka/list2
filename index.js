@@ -68,6 +68,17 @@ app.get("/", function(req, res){
 //Getting  custom todo list
 app.get("/:customListName", function(req,res){
   const customListName = req.params.customListName;
+  //Checking if the customListName exists
+List.findOne({name: customListName}, function(err, foundList){
+  if(!err){
+    if(!foundList){
+      console.log("Doesnt Exist");
+    }else{
+      console.log("Exists");
+    }
+  }
+
+});
   const list = new List({
     name: customListName,
     items: defaultItems
@@ -94,7 +105,9 @@ app.get("/work", function(req, res){
   res.render("list", { listTitle: "Work List", newListItems: workItems })
 });
 app.post("/work", function(req, res){
+
   let item = req.body.newItem;
+
   workItems.push(item);
   res.redirect("/work");
 
