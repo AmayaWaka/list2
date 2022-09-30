@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 //Mongoose variable declared
 const mongoose = require("mongoose");
+const _ = require("lodash");
 
 
 
@@ -67,7 +68,7 @@ app.get("/", function(req, res){
 });
 //Getting  custom todo list
 app.get("/:customListName", function(req,res){
-  const customListName = req.params.customListName;
+  const customListName = _.capitalize(req.params.customListName);
   //Checking if the customListName exists
 List.findOne({name: customListName}, function(err, foundList){
   if(!err){
@@ -95,14 +96,22 @@ List.findOne({name: customListName}, function(err, foundList){
 app.post("/", function(req, res){
 
   const itemName = req.body.newItem;
+  const listName = req.body.list;
 
   const item = new Item({
     name: itemName
   });
-  item.save();
 
-  res.redirect("/");
-
+  if(listName === "Today"){
+    item.save();
+    res.redirect("/");
+  }else{
+    List.findOne({name: listName}, function(err, foundList){
+      foundList.items.push(item);
+      foundList.save();
+      res.redirect("/"+ listName);
+    });
+  }
 });
 
 app.get("/work", function(req, res){
@@ -117,17 +126,29 @@ app.post("/work", function(req, res){
 
 });
 
-app.post("/delete",function(req, res){
+app.post("/delete", function(req, res){
   const checkedItemId = req.body.checkbox;
+  const listName = req.body.listName;
 
-//finding and Deleting items from db
-  Item.findByIdAndRemove(checkedItemId, function(err){
-if(!err){
-  console.log("Successfuly deleted checked item");
-  res.redirect("/");
-}
+  if (listName === "Today"){
+    //finding and Deleting items from db
+      Item.findByIdAndRemove(checkedItemId, function(err){
+        if(!err){
+      console.log("Successfuly deleted checked item");
+      res.redirect("/");
+    }
+      });
 
-  });
+  } else {
+    List.findOneAndUpdate({name: listName}, {$pull: {items: {_id: checkedItemId}}}, function(err, foundList){
+      if(!err){
+        res.redirect("/" + listName);
+      }
+
+    });
+
+  }
+
 
 });
 
