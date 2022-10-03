@@ -4,16 +4,15 @@ const bodyParser = require('body-parser');
 //Mongoose variable declared
 const mongoose = require("mongoose");
 const _ = require("lodash");
-
-
-
 // const items = [];
 // const workItems = [];
 //List.ejs rendering
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static("public"));
 //Connect and create db using mongoose
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+// mongoose.connect("mongodb+srv://radr:kyi705@cluster0.j7f5wr8.mongodb.net/?retryWrites=true&w=majority/todolistDB");
+mongoose.connect("mongodb+srv://rada:12345@cluster0.j7f5wr8.mongodb.net/todolistDB");
+// mongoose.connect('mongodb://localhost:27017/todolistDB');
 //Items schema created
 // const itemsSchema = mongoose.Schema({
 //   name: String
@@ -144,12 +143,8 @@ app.post("/delete", function(req, res){
       if(!err){
         res.redirect("/" + listName);
       }
-
     });
-
   }
-
-
 });
 
 app.listen(3000, function(req, res){
